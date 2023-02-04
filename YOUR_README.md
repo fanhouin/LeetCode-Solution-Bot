@@ -10,7 +10,7 @@
 |-------|-----------|
 |[TEST]()|[Solution]()|
 
-## Mefium
+## Medium
 ### DFS
 | Title |  Solution |
 |-------|-----------|
