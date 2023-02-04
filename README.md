@@ -28,7 +28,7 @@ GITHUB_REPO_LINK=https://github.com/<YOUR_GITHUB_LINK>/tree/master
 |-------|-----------|
 |[TEST]()|[Solution]()|
 
-## Mefium
+## Medium
 ### DFS
 | Title |  Solution |
 |-------|-----------|
