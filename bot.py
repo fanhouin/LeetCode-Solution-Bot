@@ -11,10 +11,10 @@ extention = ['cpp', 'go']
 leetcode_lang_dict = {'cpp' : 'C++', 'go' : 'Go'}
 load_dotenv()
 
-def createFloder(path: str) -> bool:
+def createFloder(path: str):
     if (os.path.exists(path) and os.path.isdir(path)):
-        print(f'[x] The problem "{path}" exists')
-        sys.exit()
+        print(f'[?0.0?] The problem "{path}" exists')
+        return 
     os.makedirs(path, exist_ok=True)
     print(f"[*] Created path: {path}")
     # for i in extention:
@@ -22,7 +22,11 @@ def createFloder(path: str) -> bool:
     #     with open(f"{path}/sol.{i}", 'w') as fp:
     #         pass
 
-def getLeetCodeSubmissions(name: str):
+def getLeetCodeSubmissions(name: str, failed: int):
+    if failed > 2:
+        print(f'[x] Too many failed attempts, exiting...')
+        sys.exit(1)
+
     print(f'[*] Getting "{name}" LeetCode Submissions')
     # get the dash_problem_name to compare with the title_slug in the response
     problem_name = re.sub(r"^\d+\. ", "", name)
@@ -32,12 +36,12 @@ def getLeetCodeSubmissions(name: str):
     cookies = {'LEETCODE_SESSION': os.getenv('LEETCODE_SESSION')}
     headers = {'Accept': 'application/json'}
     link = 'https://leetcode.com/api/submissions/?offset=0&limit=15' 
-    try:
-        r = requests.get(link, cookies=cookies, headers=headers)
-    except: 
+    r = requests.get(link, cookies=cookies, headers=headers)
+    if r.status_code != 200:
         print(f'[x] Failed to get the submissions')
         print(f'[*] Retrying in 5 seconds')
         time.sleep(5)
+        getLeetCodeSubmissions(name, failed + 1)
 
     # find the submission with the same problem name and the same language
     sub_arr = r.json()['submissions_dump']
@@ -62,7 +66,7 @@ def genMarkDown(name: str) -> str:
     dash_problem_name = re.sub(r'\s+', '-', problem_name.lower())
     solution_name = name.replace(" ", "%20")
 
-    return f"| [{problem_name}](https://leetcode.com/problems/{dash_problem_name})| [Solution]({os.getenv('GITHUB_REPO_LINK')}{solution_name})|"
+    return f"| [{problem_name}](https://leetcode.com/problems/{dash_problem_name})| [Solution]({os.getenv('GITHUB_REPO_LINK')}/{solution_name})|"
 
 def findLineIndex(level: str, p_type: str, lines) -> int:
     idx = 0
@@ -78,7 +82,7 @@ def findLineIndex(level: str, p_type: str, lines) -> int:
     return idx
 
 def changeReadMeFile(level: int, p_type: str, new_line: str):
-    with open("README.md", "r") as file:
+    with open("YOUR_README.md", "r") as file:
         lines = file.readlines()
         if level == 1:
             idx = findLineIndex("Easy", p_type, lines)
@@ -88,7 +92,7 @@ def changeReadMeFile(level: int, p_type: str, new_line: str):
             idx = findLineIndex("Hard", p_type, lines)
     lines.insert(idx, new_line + '\n')
 
-    with open("README.md", "w") as file:
+    with open("YOUR_README.md", "w") as file:
         file.writelines(lines)
            
 
@@ -96,21 +100,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='A script with a help argument')
     parser.add_argument('-n', type=str, help='The Problem Name')
     parser.add_argument('-t', type=str, help='The Problem Type')
-    parser.add_argument('-l', type=int, help='The Problem Level')
-    parser.add_argument('-c', action='store_true', help='Need to create the files')
+    parser.add_argument('-l', type=int, help='The Problem Level(Easy:1, Medium:2, Hard:3)')
     args = parser.parse_args()
 
     if args.n == None or args.t == None or args.l == None:
         parser.print_help()
         sys.exit()
 
-    if args.c == True:
-        createFloder(args.n)
-        getLeetCodeSubmissions(args.n)
-
+    createFloder(args.n)
+    getLeetCodeSubmissions(args.n, 0)
     line = genMarkDown(args.n)
     changeReadMeFile(args.l, args.t, line)
     print(f'[*] Add "{args.n}" In README.md Finished')
-    
-    
-    
