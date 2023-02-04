@@ -10,6 +10,8 @@ pip install -r requirements.txt
 ```
 LEETCODE_SESSION=<YOUR_LEETCODE_SESSION>
 GITHUB_REPO_LINK=https://github.com/<YOUR_GITHUB_REPO_LINK>
+e.g. 
+GITHUB_REPO_LINK=https://github.com/fanhouin/LeetCode-Solution-Bot/tree/main
 ```
 ### You can get the LEETCODE_SESSION value here
 ### F12 -> Application -> Cookies -> LEETCODE_SESSION -> copy the value to .env
@@ -49,7 +51,7 @@ optional arguments:
   -l L        The Problem Level(Easy:1, Medium:2, Hard:3)
 
 ./bot.py -n "72. Edit Distance" -t "String" -l 3
-# or
+or
 python3 bot.py -n "72. Edit Distance" -t "String" -l 3
 ```
 1. Run the bot.py
