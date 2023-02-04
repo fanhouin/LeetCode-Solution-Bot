@@ -9,7 +9,7 @@ pip install -r requirements.txt
 ## Add .env file
 ```
 LEETCODE_SESSION=<YOUR_LEETCODE_SESSION>
-GITHUB_REPO_LINK=https://github.com/<YOUR_GITHUB_LINK>/tree/master
+GITHUB_REPO_LINK=https://github.com/<YOUR_GITHUB_LINK>
 ```
 ### You can get the LEETCODE_SESSION value here
 ### F12 -> Application -> Cookies -> LEETCODE_SESSION -> copy the value to .env
