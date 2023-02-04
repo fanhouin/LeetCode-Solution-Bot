@@ -55,7 +55,7 @@ python3 bot.py -n "72. Edit Distance" -t "String" -l 3
 1. Run the bot.py
 2. Create "72. Edit Distance" Path
 3. Use leetcode api to get your solutions in leetcode 
-4. Add the MarkDown text in [YOUR_README.md]()
+4. Add the MarkDown text in [YOUR_README.md](https://github.com/fanhouin/LeetCode-Solution-Bot/blob/main/YOUR_README.md)
 
 
 ## Directory
